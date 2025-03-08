@@ -36,7 +36,15 @@ class HotelController extends Controller
 
     public function update(Request $request, $id)
     {
-        $hotel = Hotel::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string',
+            'cost_per_night' => 'required|numeric',
+            'available_rooms' => 'required|integer',
+            'image_url' => 'nullable|url',
+        ]);
+
+        $hotel = Hotel::find($id);
         $hotel->update($request->all());
         return response()->json($hotel);
     }
